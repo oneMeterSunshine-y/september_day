@@ -22,5 +22,8 @@ module.exports = {
     'no-tabs': 'off',
     'prefer-const ':0,
     "no-var": 0,
-  }
+    "vue/no-v-html": "off",
+    "vue/no-use-v-if-with-v-for": "off",
+    "vue/valid-v-model": "off",
+  },
 }

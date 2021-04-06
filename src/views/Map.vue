@@ -1,93 +1,86 @@
 <template>
   <div>
-    <div id="js-container"></div>
+    <div id="container"></div>
+    <div id="reset_bounds" @click="reset_bounds">aaa</div>
   </div>
 </template>
 
 <script>
+import AMapLoader from '@amap/amap-jsapi-loader';
+
 export default {
   name: 'Map',
-  data () {
+  data() {
     return {
       zoom: 16,
-      center: [114.012805, 22.98092],
-      markers: [
-        {
-          position: [114.012805, 22.98092],
-          label: {
-            offset: [-74.5, -36],
-            content: '<div style="margin: 5px 10px;color: white;font-weight: 700">九月天电子科技有限公司</div>'
-          }
-        }
-      ],
-      lat: 114.012805,
-      lng: 22.98092,
+      center: [114.012599, 22.980948],
+      content: '<div class="september_text">九月天电子科技有限公司</div>',
+      img: require('../assets/images/poi-marker-default.png'),
+      AMap: null,
+      map: null
     }
   },
-  async mounted () {
-    // 已载入高德地图API，则直接初始化地图
-    if (window.AMap && window.AMapUI) {
-      this.initMap()
-      // 未载入高德地图API，则先载入API再初始化
-    } else {
-      await remoteLoad(`http://webapi.amap.com/maps?v=1.3&key=77b540b66d288335f87cc3ec9faa606b`)
-      await remoteLoad('http://webapi.amap.com/ui/1.0/main.js')
-      this.initMap()
-    }
+  mounted() {
+    this.mapInit()
   },
   methods: {
-    initMap () {
-      // 加载PositionPicker，loadUI的路径参数为模块名中 'ui/' 之后的部分
-      let AMapUI = this.AMapUI = window.AMapUI
-      let AMap = this.AMap = window.AMap
-      AMapUI.loadUI(['misc/PositionPicker'], PositionPicker => {
-        let mapConfig = {
-          zoom: 16,
-          cityName: MapCityName
-        }
-        if (this.lat && this.lng) {
-          mapConfig.center = [this.lng, this.lat]
-        }
-        let map = new AMap.Map('js-container', mapConfig)
-        // 加载地图搜索插件
-        AMap.service('AMap.PlaceSearch', () => {
-          this.placeSearch = new AMap.PlaceSearch({
-            pageSize: 5,
-            pageIndex: 1,
-            citylimit: true,
-            city: MapCityName,
-            map: map,
-            panel: 'js-result'
-          })
-        })
-        // 启用工具条
-        AMap.plugin(['AMap.ToolBar'], function () {
-          map.addControl(new AMap.ToolBar({
-            position: 'RB'
-          }))
-        })
-        // 创建地图拖拽
-        let positionPicker = new PositionPicker({
-          mode: 'dragMap', // 设定为拖拽地图模式，可选'dragMap'、'dragMarker'，默认为'dragMap'
-          map: map // 依赖地图对象
-        })
-        // 拖拽完成发送自定义 drag 事件
-        positionPicker.on('success', positionResult => {
-          // 过滤掉初始化地图后的第一次默认拖放
-          if (!this.dragStatus) {
-            this.dragStatus = true
-          } else {
-            this.$emit('drag', positionResult)
+    mapInit() {
+      AMapLoader.load({
+        key: '77b540b66d288335f87cc3ec9faa606b',
+        version: '2.0',
+        plugins: []
+      }).then((AMap) => {
+        const map = new AMap.Map('container', {
+          resizeEnable: true, // 是否监控地图容器尺寸变化
+          zoom: this.zoom, // 初始化地图层级
+          center: this.center // 初始化地图中心点
+        });
+        const marker = new AMap.Marker({
+          icon: new AMap.Icon({
+            size: new AMap.Size(23.4, 30), // 图标大小
+            image: this.img
+          }),
+          position: this.center,
+          offset: new AMap.Pixel(-5, -26),
+          label: {
+            content: this.content,
+            direction: 'top'
           }
-        })
-        // 启动拖放
-        positionPicker.start()
+        });
+        map.add(marker)
+        this.AMap = AMap;
+        this.map = map
+      }).catch(e => {
+        console.log(e, '112'); // 设置
       })
+    },
+    reset_bounds() {
+      console.log(123)
+      // 通过 new AMap.Bounds(southWest:LngLat, northEast:LngLat) 或者 map.getBounds() 获得地图Bounds信息
+      var mybounds = new this.AMap.Bounds([114.024905, 22.987547], [113.999735, 22.970182]);
+      this.map.setBounds(mybounds);
     }
   }
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+#container {
+  height: 500px;
+  /deep/ .amap-marker-label {
+    padding: 5px 10px;
+    background-color: red;
+    border-radius: 10px;
+    border: none;
+  }
+  /deep/ .september_text {
+    color: white;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+}
+/deep/ .amap-icon img {
+  height: 100%;
+  left: 0;
+}
 </style>
