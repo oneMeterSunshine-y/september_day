@@ -1,7 +1,9 @@
 <template>
   <div>
     <div id="container"></div>
-    <div id="reset_bounds" @click="reset_bounds">aaa</div>
+    <div id="reset_bounds" @click="reset_bounds">
+      <img class="images" src="../assets/images/Fixed.png">
+    </div>
   </div>
 </template>
 
@@ -57,7 +59,7 @@ export default {
     reset_bounds() {
       console.log(123)
       // 通过 new AMap.Bounds(southWest:LngLat, northEast:LngLat) 或者 map.getBounds() 获得地图Bounds信息
-      var mybounds = new this.AMap.Bounds([114.024905, 22.987547], [113.999735, 22.970182]);
+      var mybounds = new this.AMap.Bounds([114.018983, 22.985369], [114.006399, 22.976124]);
       this.map.setBounds(mybounds);
     }
   }
@@ -77,6 +79,19 @@ export default {
     color: white;
     font-weight: 700;
     white-space: nowrap;
+  }
+}
+#reset_bounds {
+  position: relative;
+  .images {
+    height: 20px;
+    position: absolute;
+    bottom: 10px;
+    right: 14px;
+    background: red;
+    padding: 5px;
+    border-radius: 50%;
+    box-shadow: 1px 1px 5px rgba(234, 50, 35, 0.5);
   }
 }
 /deep/ .amap-icon img {

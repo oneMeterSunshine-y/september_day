@@ -5,7 +5,7 @@
         <div class="title">企业服务</div>
         <div class="sub_title">九月天科技，智能穿戴产品专家。我们的团队技术精湛，经验丰富，为客户提供技术保障，
           珠三角范围24小时内抵达服务，致力做好产品保姆。成功路上，期待与您携手同行。</div>
-        <img style="width: 1100px" src="../assets/images/jiuyuetian.png">
+        <img style="width: 93%" src="../assets/images/jiuyuetian.png">
       </div>
       <div class="contact_us">
         <div class="title">联系我们</div>
@@ -27,7 +27,8 @@
           </div>
         </div>
         <div class="map" >
-          <img src="../assets/images/map.png">
+<!--          <img src="../assets/images/map.png">-->
+          <mapElement></mapElement>
         </div>
       </div>
     </div>

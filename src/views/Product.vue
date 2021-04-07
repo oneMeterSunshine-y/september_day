@@ -91,9 +91,8 @@ export default {
       .cont_flex {
         display: flex;
         flex-wrap: wrap;
-        justify-content: left;
-        width: 80%;
-        min-width: 1300px;
+        justify-content: space-around;
+        width: 88%;
         margin: 0 auto;
         &_on {
           margin: 0 20px;

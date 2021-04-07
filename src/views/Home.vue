@@ -105,17 +105,16 @@
       </div>
       <div class="map">
 <!--        <img src="../assets/images/map.png">-->
-        <Map></Map>
+        <mapElement></mapElement>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Map from './Map'
+
 export default {
   name: 'Home',
-  components: { Map },
   data () {
     return {
       banner: [
